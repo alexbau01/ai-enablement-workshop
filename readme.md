@@ -26,8 +26,34 @@ This workshop is designed to help you get started with AI and Machine Learning i
 
 You need to have the following tools installed on your machine:
 
+### Python Setup
+
 - Python
+- Python venv in your project folder
+- Jupyter pip package in venv
 - Jupyter Notebook Server (e.g. VS Code Jupyter Extension)
+
+You can leverage the functionality of your IDE (preferrably VS Code or PyCharm) to run the Jupyter Notebooks. Feel free to create the venv and activate Jupyter from there. To do it manually, you can use the following commands:
+
+#### Create venv in current folder (make sure you are in the project root folder):
+```bash
+python3 -m venv venv 
+```
+
+#### Activate venv:
+Mac/Linux:
+```bash
+source venv/bin/activate
+```
+Windows:
+```bash
+venv\Scripts\activate.bat
+```
+
+#### Install jupyter in venv:
+```bash 
+pip install jupyter
+```
 
 ### Secrets
 
