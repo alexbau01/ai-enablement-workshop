@@ -24,6 +24,11 @@ This workshop is designed to help you get started with AI and Machine Learning i
 
 ## Technical Setup
 
+You need to have the following tools installed on your machine:
+
+- Python
+- Jupyter Notebook Server (e.g. VS Code Jupyter Extension)
+
 ### Secrets
 
 Download the secrets for AI Core and HANA Cloud from the BTP subaccount for the workshop. Links will be provided.
@@ -34,5 +39,3 @@ If the secrets folder does not exist, create it.
 Call the secret file for ai core `aicore.json` and the secret for HANA Cloud `hana.json`.
 
 We will import the secrets later in the code.
-
-
