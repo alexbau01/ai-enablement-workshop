@@ -1,0 +1,57 @@
+{
+  "module_configurations": {
+    "llm_module_config": {
+      "model_name": "gpt-4o",
+      "model_params": {
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "model_version": "2024-05-13"
+    },
+    "templating_module_config": {
+      "template": [
+        {
+          "role": "system",
+          "content": "You are an email classifier for a large energy company in Austria."
+        },
+        {
+          "role": "user",
+          "content": "Assess which type of inquiry the email refers to: {{?categories}}.\n\nAlso assess the urgency of the request as \"low\", \"medium\", \"high\", or \"critical\".\n\nIf available in the email, also extract the senders name and their phone number. Otherwise, do not add it to the JSON Object. If the phone number contains a country code, write it down as starting with plus, followed by the country code. Do not add any spaces between numbers.\n\nAlso summarize the given email as shortly as possible and in English. Focus on the issues described and actions to take. Add the summary as \"shortSummary\" to the JSON.\n\nRespond only with a raw JSON Object in the following format, do not add any formatting:\n{\"type\": string, \"urgency\": string, \"senderName\": string, \"phoneNumber\": string, \"shortSummary\": string}\n\n---- Email ----\n\n{{?email}}"
+        }
+      ],
+      "defaults": {
+        "categories": "[\"naturalGasInquiry\", \"classicalFuelInquiry\", \"hydrogenInquiry\", \"sustainableFuelInquiry\", \"partnershipProposal\", \"technicalSupport\", \"feedback\", \"billingIssue\", \"generalInquiry\", \"other\"]",
+        "email": "Hallo,\n\nich bin daran interessiert, mehr über die Möglichkeiten für nachhaltige Kraftstoffe zu erfahren, die Ihr Unternehmen anbietet. Besonders interessiert mich, welche Arten von nachhaltigen Kraftstoffen angeboten werden und wie diese zur Reduzierung des CO2-Ausstoßes beitragen können.\n\nWäre es möglich, detaillierte Informationen über die Eigenschaften dieser Kraftstoffe und deren Verfügbarkeit zu erhalten?\n\nFalls Sie noch weitere Informationen benötigen, erreichen Sie mich unter +43123456789.\n\nVielen Dank für Ihre Unterstützung.\n\nMit freundlichen Grüßen,\nJohann Moser\nXYZ Transport GmbH"
+      }
+    },
+    "filtering_module_config": {
+      "input": {
+        "filters": [
+          {
+            "type": "azure_content_safety",
+            "config": {
+              "Hate": 2,
+              "SelfHarm": 2,
+              "Sexual": 2,
+              "Violence": 2
+            }
+          }
+        ]
+      },
+      "output": {
+        "filters": [
+          {
+            "type": "azure_content_safety",
+            "config": {
+              "Hate": 2,
+              "SelfHarm": 2,
+              "Sexual": 2,
+              "Violence": 2
+            }
+          }
+        ]
+      }
+    }
+  }
+}

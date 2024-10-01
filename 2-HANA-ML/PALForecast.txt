@@ -1,0 +1,55 @@
+-- create a view for model training, which contains monthly sales data for 2014 -2016
+DROP VIEW PAL_ARIMA_SALES_DATA_VIEW_<your_xkey>;
+CREATE VIEW PAL_ARIMA_SALES_DATA_VIEW_<your_xkey> as (
+select TO_INTEGER(ROW_NUMBER() over ()) as "TIMESTAMP", MONTHLY_SALES from
+(select 
+	top 36 ROW_NUMBER() over () as "TIMESTAMP", YEAR, MONTH, SUM(SALES) as MONTHLY_SALES
+from 
+	(select 
+		YEAR(TO_DATE("Order Date", 'MM/DD/YYYY')) YEAR, MONTH(TO_DATE("Order Date", 'MM/DD/YYYY')) MONTH, TO_DOUBLE("Sales") SALES 
+		from 
+			SALES_DATA
+		where
+		"Sales" is not NULL
+	)
+group by YEAR, MONTH
+order by YEAR, MONTH));
+
+
+-- create parameter table for the model training
+DROP TABLE PAL_PARAMETER_TBL_<your_xkey>;
+CREATE COLUMN TABLE PAL_PARAMETER_TBL_<your_xkey> ( "NAME" VARCHAR (50),"INT_VALUE" INTEGER,"DOUBLE_VALUE" DOUBLE,"STRING_VALUE" VARCHAR (100));
+INSERT INTO PAL_PARAMETER_TBL_<your_xkey> VALUES ('SEARCH_STRATEGY', 1,NULL,NULL);
+INSERT INTO PAL_PARAMETER_TBL_<your_xkey> VALUES ('ALLOW_LINEAR', 1, NULL, NULL);
+INSERT INTO PAL_PARAMETER_TBL_<your_xkey> VALUES ('THREAD_RATIO', NULL, 1.0, NULL);
+
+-- a table to save the model 
+DROP TABLE PAL_ARIMA_MODEL_TBL_<your_xkey>;  -- for the forecast followed
+CREATE COLUMN TABLE PAL_ARIMA_MODEL_TBL_<your_xkey> ("KEY" NVARCHAR(100), "VALUE" NVARCHAR(5000));
+
+
+-- model training procedure
+do begin 
+	lt_data = select * from PAL_ARIMA_SALES_DATA_VIEW_<your_xkey>;
+	lt_control = select * from PAL_PARAMETER_TBL_<your_xkey>;
+	CALL _SYS_AFL.PAL_AUTOARIMA(:lt_data, :lt_control, lt_model, lt_fit);
+	INSERT INTO PAL_ARIMA_MODEL_TBL_<your_xkey> SELECT * FROM :lt_model;
+	SELECT * FROM PAL_ARIMA_MODEL_TBL_<your_xkey>;
+	SELECT * FROM :lt_fit;
+end;
+
+-- creating the forecast tables 
+DROP TABLE PAL_ARIMA_SALES_FORECAST_TBL_<your_xkey>;
+CREATE COLUMN TABLE PAL_ARIMA_SALES_FORECAST_TBL_<your_xkey> ("TIMESTAMP" INTEGER, "Y" DOUBLE);
+
+DROP TABLE PAL_ARIMA_SALES_FORECAST_OUT_TBL_<your_xkey>;
+CREATE COLUMN TABLE PAL_ARIMA_SALES_FORECAST_OUT_TBL_<your_xkey> ("TIMESTAMP" INTEGER, "FORECAST" DOUBLE, "SE" DOUBLE, "LO80" DOUBLE, "HI80" DOUBLE, "LO95" DOUBLE, "HI95" DOUBLE);
+
+-- parameter table for the forecast 
+DROP TABLE #PAL_PARAMETER_TBL_<your_xkey>;
+CREATE LOCAL TEMPORARY COLUMN TABLE #PAL_PARAMETER_TBL_<your_xkey> ( "NAME" VARCHAR (50),"INT_VALUE" INTEGER,"DOUBLE_VALUE" DOUBLE,"STRING_VALUE" VARCHAR (100));
+INSERT INTO #PAL_PARAMETER_TBL_<your_xkey> VALUES ('FORECAST_METHOD', 1, NULL, NULL);
+INSERT INTO #PAL_PARAMETER_TBL_<your_xkey> VALUES ('FORECAST_LENGTH', 12, NULL, NULL);
+
+-- PAL procedure which creates sales predictions for 2017 (12 next months)
+CALL _SYS_AFL.PAL_ARIMA_FORECAST (PAL_ARIMA_SALES_FORECAST_TBL_<your_xkey>, PAL_ARIMA_MODEL_TBL_<your_xkey>, "#PAL_PARAMETER_TBL_<your_xkey>", PAL_ARIMA_SALES_FORECAST_OUT_TBL_<your_xkey>);

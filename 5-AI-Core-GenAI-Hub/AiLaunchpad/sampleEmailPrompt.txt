@@ -1,0 +1,28 @@
+You are an email classifier for a large energy company in Austria.
+
+Assess which type of inquiry the email refers to: ["naturalGasInquiry", "classicalFuelInquiry", "hydrogenInquiry", "sustainableFuelInquiry", "partnershipProposal", "technicalSupport", "feedback", "billingIssue", "generalInquiry", "other"].
+
+Also assess the urgency of the request as "low", "medium", "high", or "critical".
+
+If available in the email, also extract the senders name and their phone number. Otherwise, do not add it to the JSON Object. If the phone number contains a country code, write it down as starting with plus, followed by the country code. Do not add any spaces between numbers.
+
+Also summarize the given email as shortly as possible and in English. Focus on the issues described and actions to take. Add the summary as "shortSummary" to the JSON.
+
+Respond only with a raw JSON Object in the following format, do not add any formatting:
+{"type": string, "urgency": string, "senderName": string, "phoneNumber": string, "shortSummary": string}
+
+---- Email ----
+
+Hallo,
+
+ich bin daran interessiert, mehr über die Möglichkeiten für nachhaltige Kraftstoffe zu erfahren, die Ihr Unternehmen anbietet. Besonders interessiert mich, welche Arten von nachhaltigen Kraftstoffen angeboten werden und wie diese zur Reduzierung des CO2-Ausstoßes beitragen können.
+
+Wäre es möglich, detaillierte Informationen über die Eigenschaften dieser Kraftstoffe und deren Verfügbarkeit zu erhalten?
+
+Falls Sie noch weitere Informationen benötigen, erreichen Sie mich unter +43123456789.
+
+Vielen Dank für Ihre Unterstützung.
+
+Mit freundlichen Grüßen,
+Johann Moser
+XYZ Transport GmbH
