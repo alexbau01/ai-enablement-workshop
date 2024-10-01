@@ -1,0 +1,6 @@
+generative-ai-hub-sdk[all]
+python-dotenv
+hana-ml
+pandas
+pypdf
+numpy==1.26.4
