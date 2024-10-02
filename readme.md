@@ -3,15 +3,6 @@
 ## Introduction
 This workshop is designed to help you get started with AI and Machine Learning in the SAP context. We will cover topics in the area of AI, Machine Learning, and Deep Learning. We will primarily Python programming language and how to use it for AI and Machine Learning.
 
-## Prerequisites
-
-- Basic programming knowledge
-- Basic understanding of Machine Learning
-- Basic understanding of Python
-- Basic understanding of Jupyter Notebooks
-- Basic understanding of SAP BTP
-- Basic understanding of SAP HANA
-
 ## Agenda
 
 1. Introduction & Technical Setup Check (~45 min)
@@ -26,6 +17,10 @@ This workshop is designed to help you get started with AI and Machine Learning i
 
 You need to have the following tools installed on your machine:
 
+### Git
+
+If you want to clone the GitHub repository, you need to have Git installed on your machine. Alternatively, you can download the repository as a ZIP file.
+
 ### Python Setup
 
 - Python
@@ -35,12 +30,22 @@ You need to have the following tools installed on your machine:
 
 You can leverage the functionality of your IDE (preferrably VS Code or PyCharm) to run the Jupyter Notebooks. Feel free to create the venv and activate Jupyter from there. To do it manually, you can use the following commands:
 
-#### Create venv in current folder (make sure you are in the project root folder):
+#### Warning
+_Note: Make sure you have access to the internet to install the required packages. If you are behind a proxy, make sure to set the proxy settings accordingly._
+
+_If you have troubles with your local setup, you can also use the SAP Business Application Studio for this workshop. Make sure to enable the Python capability for your Dev Space._
+
+#### Create venv in current folder 
+You can create and activate a virtual environment in the console. If you want to use the built-in feature of your IDE for creating the environment, you can skip this step.
+
+Make sure you are in the project root folder.
 ```bash
 python3 -m venv venv 
 ```
 
 #### Activate venv:
+The venv can be activated in the console. How you activate the venv in your IDE and select it for the Jupyter Notebook Server depends on the IDE you are using.
+
 Mac/Linux:
 ```bash
 source venv/bin/activate
