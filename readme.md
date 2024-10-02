@@ -78,3 +78,5 @@ aicore configure -k ./secrets/aicore.json
 ```
 
 If required, adjust the path to the secret file accordingly.
+
+You will be prompted to select a resource group. Since we deployed the GenAI models into the default resource group on AI Core, you can select the default resource group by pressing Enter.
