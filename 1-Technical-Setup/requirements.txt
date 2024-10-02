@@ -5,3 +5,6 @@ pandas
 pypdf
 numpy==1.26.4
 numexpr
+matplotlib
+plotly
+statsmodels
