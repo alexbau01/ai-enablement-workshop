@@ -65,3 +65,11 @@ If the secrets folder does not exist, create it.
 Call the secret file for ai core `aicore.json` and the secret for HANA Cloud `hana.json`.
 
 We will import the secrets later in the code.
+
+To work with generative AI and embedding models, you need to store your AI Core key in a config file. This config file can be created through a cli tool:
+
+```bash
+aicore configure -k ./secrets/aicore.json
+```
+
+If required, adjust the path to the secret file accordingly.
