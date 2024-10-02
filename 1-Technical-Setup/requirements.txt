@@ -8,3 +8,10 @@ numexpr
 matplotlib
 plotly
 statsmodels
+requests
+seaborn
+pillow
+ai_core_sdk
+ai_api_client_sdk
+pybase64
+opencv-python
